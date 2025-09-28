@@ -1,43 +1,52 @@
 <html>
-   <head>
+
+<head>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
-   </head>
-   
-   <body>
-       <div>
-           <h3>DOM Manipulation and Event Handling Task</h3>
-       </div>
-   <form>
-       <div>
-           <label>Number 1:</label>
-           <input type="number" name="num1" id="num1" value="">
-       </div>
-       <hr>
-   
-       <div>
-           <label>Number 2:</label>
-           <input type="number" name="num2" id="num2" value="">
-       </div>
-       <br>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lobster&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
 
-       <div>
-           <button type="button" id="add" style="color:green">ADD</button>
-           <button type="button" id="sub" style="color:red">SUBTRACT</button>
-           <button type="button " id="mul" style="color:blue">MULTIPLY</button>
-           <br><br>
-           <button type="button" id="div" style="color:orange">DIVIDE</button>
-           <button type="button" id="mod" style="color:pink">MODULUS</button>
-       </div>
-       <br>
+<body>
+    <i>
+        <p style="text-align:left; color:white;">DOM Manipulation and Event Handling Task</p>
+    </i>
 
-       <div>
-           <label>Result:</label>
-           <input type="number" name="result" id="result" value="">    
-       </div>
-   </form>
-       
-   </body>
+    <div class="whole">
+    
+    
+        <h1 style="text-align:center;" id="top">Calculator</h1>
+        <form class="main">
+            <div class="number">
+                <label>Number 1:</label>
+                <input type="number" name="num1" id="num1" value="">
+            </div>
+
+            <br>
+            <div class="number">
+                <label>Number 2:</label>
+                <input type="number" name="num2" id="num2" value="">
+            </div>
+            <br>
+
+            <div class="buttons">
+                <button type="button" id="add">ADD</button>
+                <button type="button" id="sub">SUBTRACT</button><br>
+                <button type="button" id="mul">MULTIPLY</button>
+                <button type="button" id="divi">DIVIDE</button><br>
+                <button type="button" id="mod">MODULUS</button><br>
+            </div>
+            <br>
+
+            <div>
+                <label>Result:</label>
+                <input type="number" name="result" id="result" value="">
+            </div>
+        </form>
+    </div>
+
+</body>
 
 </html>

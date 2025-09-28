@@ -1,0 +1,104 @@
+
+.main {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.whole {
+    border: 5px solid rgb(75, 25, 4);
+    border-radius:190px;
+    margin: 15 350 15 350px;
+    padding: 0 30 10 30px;
+    background-color: lightgrey;
+}
+body{
+        background-color:rgb(125, 4, 147);
+        background-repeat: no-repeat;
+        background-size: cover;
+}
+#num1,
+#num2 {
+    font-weight: bold;
+    font-size: 24px;
+    width: 200px;
+    height: 34px
+}
+
+#result {
+    color: rgb(9, 67, 9);
+    font-weight: bold;
+    background-color: lightblue;
+    width: 230px;
+    height: 38px;   
+    font-size: 20px;
+    border-radius:10px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 30px;
+    text-align: left;
+
+
+}
+
+#top {
+    font-family: lobster two;
+    font-size: 50px;
+    text-decoration: underline;
+    color: brown;
+}
+
+#add {
+    color: green;
+    border-radius: 6px;
+}
+
+#add:hover {
+    background-color: lightgreen;
+}
+
+#sub {
+    color: red;
+    border-radius: 6px;
+}
+
+#sub:hover {
+    background-color: lightcoral;
+}
+
+#mul {
+    color: orange;
+    border-radius: 6px;
+}
+
+#mul:hover {
+    background-color: lightyellow;
+}
+
+#mod {
+    color: blue;
+    border-radius: 6px;
+}
+
+#mod:hover {
+    background-color: cyan;
+}
+
+#divi {
+    color: purple;
+    border-radius: 6px;
+}
+
+#divi:hover {
+    background-color: burlywood;
+}
+
+button {
+    text-align: center;
+    width: 120px;
+    height: 50px;
+    font-size: 17px;
+    font-weight: bold;
+
+}
