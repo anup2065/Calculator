@@ -1,8 +1,16 @@
-let num1=$("#num1");
-let num2=$("#num2");
-let result=$("#result ");
-let addbtn=$("#add");
-let subbtn=$("#sub");
-let divbtn=$("#mul");
-let modbtn=$("#div");
-let mulbtn=$("#mod");
+let a=$("#num1");
+let b=$("#num2");
+let result=$("#result");
+let add=$("#add");
+let sub=$("#sub");
+let mul=$("#mul");
+let div=$("#div");
+let mod=$("#mod");
+
+
+$(document).ready(function()
+{
+ add.click(function(){
+alert(a.val()+b.val());
+ }) ;
+});
