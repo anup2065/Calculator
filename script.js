@@ -11,6 +11,6 @@ let mod=$("#mod");
 $(document).ready(function()
 {
  add.click(function(){
-alert(a.val()+b.val());
+result.val(parsefloat(a.val())+parsefloat(b.val()));
  }) ;
 });
