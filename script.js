@@ -121,8 +121,8 @@ $(document).ready(function(){
                 resultValue = num1 % num2;
                 break;
             case 'percent':
-                // Calculate percentage: num1 is what percent of num2
-                resultValue = (num1 / num2) * 100;
+                // Calculate percentage: num1 percent of num2
+                resultValue = (num1 / 100) * num2;
                 break;
             case 'power':
                 resultValue = Math.pow(num1, num2);
