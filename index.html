@@ -1,54 +1,76 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
+    <title>Advanced Calculator</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lobster&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lobster&family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="container">
+        <div class="whole">
+            <h1 id="top">Calculator</h1>
+            
+            <form class="main" id="calcForm">
+                <div class="number">
+                    <label>Number 1:</label>
+                    <div class="input-group">
+                        <input type="number" step="any" name="num1" id="num1" value="" placeholder="Enter number">
+                        <button type="button" class="toggle-btn" id="toggle1" title="Toggle negative">+/-</button>
+                    </div>
+                </div>
 
+                <div class="number">
+                    <label>Number 2:</label>
+                    <div class="input-group">
+                        <input type="number" step="any" name="num2" id="num2" value="" placeholder="Enter number">
+                        <button type="button" class="toggle-btn" id="toggle2" title="Toggle negative">+/-</button>
+                    </div>
+                </div>
 
-    <div class="whole">
-    
-    
-        <h1 style="text-align:center;" id="top">Calculator</h1>
-        <form class="main">
-            <div class="number">
-                <label>Number 1:</label>
-                <input type="number" name="num1" id="num1" value="">
+                <div class="buttons">
+                    <button type="button" id="add" class="calc-btn" title="Add (Keyboard: +)">ADD</button>
+                    <button type="button" id="sub" class="calc-btn" title="Subtract (Keyboard: -)">SUBTRACT</button>
+                    <button type="button" id="mul" class="calc-btn" title="Multiply (Keyboard: *)">MULTIPLY</button>
+                    <button type="button" id="divi" class="calc-btn" title="Divide (Keyboard: /)">DIVIDE</button>
+                    <button type="button" id="mod" class="calc-btn" title="Modulus (Keyboard: %)">MODULUS</button>
+                    <button type="button" id="percent" class="calc-btn" title="Percentage">PERCENT</button>
+                    <button type="button" id="power" class="calc-btn" title="Power (Num1 ^ Num2)">POWER</button>
+                    <button type="button" id="clear" class="calc-btn clear-btn" title="Clear all (Keyboard: Esc)">CLEAR</button>
+                </div>
+
+                <div class="result-section">
+                    <label>Result:</label>
+                    <div class="result-group">
+                        <input type="text" name="result" id="result" value="" readonly placeholder="Result appears here">
+                        <button type="button" id="copyResult" class="action-btn" title="Copy result">📋</button>
+                        <button type="button" id="useResult" class="action-btn" title="Use result for next calculation">↻</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="keyboard-hint">
+                💡 Tip: Press Enter to calculate, Esc to clear, or use +, -, *, /, % keys
             </div>
+        </div>
 
-            <br>
-            <div class="number">
-                <label>Number 2:</label>
-                <input type="number" name="num2" id="num2" value="">
+        <div class="history-panel" id="historyPanel">
+            <div class="history-header">
+                <h2>Calculation History</h2>
+                <button type="button" id="clearHistory" class="action-btn" title="Clear history">🗑️</button>
             </div>
-            <br>
-
-            <div class="buttons">
-                <button type="button" id="add">ADD</button>
-                <button type="button" id="sub">SUBTRACT</button><br>
-                <button type="button" id="mul">MULTIPLY</button>
-                <button type="button" id="divi">DIVIDE</button><br>
-                <button type="button" id="mod">MODULUS</button><br>
+            <div id="historyList" class="history-list">
+                <p class="no-history">No calculations yet</p>
             </div>
-            <br>
-
-            <div>
-                <label>Result:</label>
-                <input type="number" name="result" id="result" value="">
-            </div>
-        </form>
+        </div>
     </div>
-
 </body>
-
 
 </html>
