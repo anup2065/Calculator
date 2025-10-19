@@ -233,12 +233,70 @@ $(document).ready(function(){
         }
     });
 
-    // Percent button (calculates percentage of current value)
+    // Percent button (calculates percentage based on context)
     $("#percent").click(function() {
         const value = parseFloat(currentValue);
-        currentValue = formatResult(value / 100);
-        shouldResetDisplay = true;
-        updateDisplay();
+        
+        // If there's a previous operation, calculate immediately with percentage
+        if (previousValue !== null && operator !== null) {
+            const prev = parseFloat(previousValue);
+            let percentValue;
+            
+            // For + and -, use percentage of previous value
+            if (operator === '+' || operator === '-') {
+                percentValue = (prev * value) / 100;
+            } 
+            // For ×, ÷, mod, ^, just convert to decimal percentage
+            else {
+                percentValue = value / 100;
+            }
+            
+            // Now perform the calculation immediately
+            let result;
+            switch(operator) {
+                case '+':
+                    result = prev + percentValue;
+                    break;
+                case '-':
+                    result = prev - percentValue;
+                    break;
+                case '×':
+                    result = prev * percentValue;
+                    break;
+                case '÷':
+                    if (percentValue === 0) {
+                        showError("Cannot divide by zero");
+                        return;
+                    }
+                    result = prev / percentValue;
+                    break;
+                case 'mod':
+                    if (percentValue === 0) {
+                        showError("Cannot modulo by zero");
+                        return;
+                    }
+                    result = prev % percentValue;
+                    break;
+                case '^':
+                    result = Math.pow(prev, percentValue);
+                    break;
+            }
+            
+            const formattedResult = formatResult(result);
+            addToHistory(previousValue, operator, value + "%", formattedResult);
+            
+            currentValue = formattedResult;
+            previousValue = null;
+            operator = null;
+            shouldResetDisplay = true;
+            updateDisplay();
+            updateOperationDisplay();
+        } else {
+            // Standalone percent - just convert to decimal
+            currentValue = formatResult(value / 100);
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
     });
 
     // Copy result
