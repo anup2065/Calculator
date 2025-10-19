@@ -18,52 +18,62 @@
         <div class="whole">
             <h1 id="top">Calculator</h1>
             
-            <form class="main" id="calcForm">
-                <div class="number">
-                    <label>Number 1:</label>
-                    <div class="input-group">
-                        <input type="number" step="any" name="num1" id="num1" value="" placeholder="Enter number">
-                        <button type="button" class="toggle-btn" id="toggle1" title="Toggle negative">+/-</button>
-                    </div>
+            <div class="calculator-body">
+                <!-- Display -->
+                <div class="display-container">
+                    <div class="display-operation" id="operation"></div>
+                    <input type="text" id="display" class="display" value="0" readonly>
                 </div>
 
-                <div class="number">
-                    <label>Number 2:</label>
-                    <div class="input-group">
-                        <input type="number" step="any" name="num2" id="num2" value="" placeholder="Enter number">
-                        <button type="button" class="toggle-btn" id="toggle2" title="Toggle negative">+/-</button>
-                    </div>
+                <!-- Action Buttons -->
+                <div class="action-row">
+                    <button type="button" id="copyResult" class="action-btn" title="Copy result">📋 Copy</button>
+                    <button type="button" id="useResult" class="action-btn" title="Use for next calc">↻ Use</button>
                 </div>
 
-                <div class="buttons">
-                    <button type="button" id="add" class="calc-btn" title="Add (Keyboard: +)">ADD</button>
-                    <button type="button" id="sub" class="calc-btn" title="Subtract (Keyboard: -)">SUBTRACT</button>
-                    <button type="button" id="mul" class="calc-btn" title="Multiply (Keyboard: *)">MULTIPLY</button>
-                    <button type="button" id="divi" class="calc-btn" title="Divide (Keyboard: /)">DIVIDE</button>
-                    <button type="button" id="mod" class="calc-btn" title="Modulus (Keyboard: %)">MODULUS</button>
-                    <button type="button" id="percent" class="calc-btn" title="Percentage">PERCENT</button>
-                    <button type="button" id="power" class="calc-btn" title="Power (Num1 ^ Num2)">POWER</button>
-                    <button type="button" id="clear" class="calc-btn clear-btn" title="Clear all (Keyboard: Esc)">CLEAR</button>
+                <!-- Calculator Buttons -->
+                <div class="button-grid">
+                    <button type="button" class="btn clear-btn" id="clear">C</button>
+                    <button type="button" class="btn special-btn" id="backspace">⌫</button>
+                    <button type="button" class="btn special-btn" id="percent">%</button>
+                    <button type="button" class="btn operator-btn" data-operator="÷">÷</button>
+
+                    <button type="button" class="btn number-btn" data-number="7">7</button>
+                    <button type="button" class="btn number-btn" data-number="8">8</button>
+                    <button type="button" class="btn number-btn" data-number="9">9</button>
+                    <button type="button" class="btn operator-btn" data-operator="×">×</button>
+
+                    <button type="button" class="btn number-btn" data-number="4">4</button>
+                    <button type="button" class="btn number-btn" data-number="5">5</button>
+                    <button type="button" class="btn number-btn" data-number="6">6</button>
+                    <button type="button" class="btn operator-btn" data-operator="-">-</button>
+
+                    <button type="button" class="btn number-btn" data-number="1">1</button>
+                    <button type="button" class="btn number-btn" data-number="2">2</button>
+                    <button type="button" class="btn number-btn" data-number="3">3</button>
+                    <button type="button" class="btn operator-btn" data-operator="+">+</button>
+
+                    <button type="button" class="btn special-btn" id="toggleSign">+/-</button>
+                    <button type="button" class="btn number-btn" data-number="0">0</button>
+                    <button type="button" class="btn special-btn" id="decimal">.</button>
+                    <button type="button" class="btn equals-btn" id="equals">=</button>
                 </div>
 
-                <div class="result-section">
-                    <label>Result:</label>
-                    <div class="result-group">
-                        <input type="text" name="result" id="result" value="" readonly placeholder="Result appears here">
-                        <button type="button" id="copyResult" class="action-btn" title="Copy result">📋</button>
-                        <button type="button" id="useResult" class="action-btn" title="Use result for next calculation">↻</button>
-                    </div>
+                <!-- Advanced Operations -->
+                <div class="advanced-ops">
+                    <button type="button" class="btn advanced-btn" data-operator="^">x^y</button>
+                    <button type="button" class="btn advanced-btn" data-operator="mod">mod</button>
                 </div>
-            </form>
 
-            <div class="keyboard-hint">
-                💡 Tip: Press Enter to calculate, Esc to clear, or use +, -, *, /, % keys
+                <div class="keyboard-hint">
+                    💡 Keyboard: Numbers 0-9, Operators +−×÷, Enter = Calculate, Esc = Clear
+                </div>
             </div>
         </div>
 
         <div class="history-panel" id="historyPanel">
             <div class="history-header">
-                <h2>Calculation History</h2>
+                <h2>History</h2>
                 <button type="button" id="clearHistory" class="action-btn" title="Clear history">🗑️</button>
             </div>
             <div id="historyList" class="history-list">

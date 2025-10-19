@@ -1,57 +1,124 @@
 $(document).ready(function(){
-    let a = $("#num1");
-    let b = $("#num2");
-    let result = $("#result");
+    let display = $("#display");
+    let operationDisplay = $("#operation");
+    let currentValue = "0";
+    let previousValue = null;
+    let operator = null;
+    let shouldResetDisplay = false;
     let calculationHistory = [];
-    let lastOperation = '';
 
-    // Helper function to validate inputs
-    function validateInputs() {
-        let num1 = parseFloat(a.val());
-        let num2 = parseFloat(b.val());
-        
-        if (isNaN(num1) || a.val() === '') {
-            showError("Please enter a valid Number 1");
-            return null;
-        }
-        if (isNaN(num2) || b.val() === '') {
-            showError("Please enter a valid Number 2");
-            return null;
-        }
-        return { num1, num2 };
+    // Update display
+    function updateDisplay() {
+        display.val(currentValue);
     }
 
-    // Helper function to format result
+    // Update operation display
+    function updateOperationDisplay() {
+        if (previousValue !== null && operator) {
+            operationDisplay.text(`${previousValue} ${operator}`);
+        } else {
+            operationDisplay.text('');
+        }
+    }
+
+    // Clear everything
+    function clearAll() {
+        currentValue = "0";
+        previousValue = null;
+        operator = null;
+        shouldResetDisplay = false;
+        updateDisplay();
+        updateOperationDisplay();
+        display.removeClass('error');
+    }
+
+    // Format result
     function formatResult(value) {
         if (isNaN(value)) {
-            return "Error: Invalid calculation";
+            return "Error";
         }
         if (!isFinite(value)) {
-            return "Error: Division by zero";
+            return "Error";
         }
-        // Round to 10 decimal places to avoid floating point issues
-        return Math.round(value * 10000000000) / 10000000000;
+        // Round to 10 decimal places
+        let rounded = Math.round(value * 10000000000) / 10000000000;
+        // Convert to string and remove trailing zeros
+        let str = rounded.toString();
+        return str;
     }
 
-    // Helper function to show error
+    // Perform calculation
+    function calculate() {
+        if (previousValue === null || operator === null) {
+            return;
+        }
+
+        let prev = parseFloat(previousValue);
+        let current = parseFloat(currentValue);
+        let result;
+
+        switch(operator) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case '×':
+                result = prev * current;
+                break;
+            case '÷':
+                if (current === 0) {
+                    showError("Cannot divide by zero");
+                    return;
+                }
+                result = prev / current;
+                break;
+            case 'mod':
+                if (current === 0) {
+                    showError("Cannot modulo by zero");
+                    return;
+                }
+                result = prev % current;
+                break;
+            case '^':
+                result = Math.pow(prev, current);
+                break;
+            default:
+                return;
+        }
+
+        const formattedResult = formatResult(result);
+        
+        if (formattedResult !== "Error") {
+            addToHistory(previousValue, operator, currentValue, formattedResult);
+            currentValue = formattedResult;
+            previousValue = null;
+            operator = null;
+            shouldResetDisplay = true;
+            updateDisplay();
+            updateOperationDisplay();
+        }
+    }
+
+    // Show error
     function showError(message) {
-        result.val(message);
-        result.addClass('error');
+        display.val(message);
+        display.addClass('error');
         setTimeout(() => {
-            result.removeClass('error');
-        }, 2000);
+            clearAll();
+        }, 1500);
     }
 
-    // Helper function to add to history
-    function addToHistory(num1, operator, num2, resultValue) {
-        const calculation = `${num1} ${operator} ${num2} = ${resultValue}`;
+    // Add to history
+    function addToHistory(num1, op, num2, result) {
+        const calculation = `${num1} ${op} ${num2} = ${result}`;
         calculationHistory.unshift({
             calculation: calculation,
-            result: resultValue,
+            result: result,
             timestamp: new Date().toLocaleTimeString()
         });
         
-        // Keep only last 10 calculations
         if (calculationHistory.length > 10) {
             calculationHistory.pop();
         }
@@ -80,146 +147,125 @@ $(document).ready(function(){
         
         historyList.html(historyHTML);
         
-        // Add click handlers to history items
         $('.history-item').click(function() {
             const index = $(this).data('index');
-            const historyResult = calculationHistory[index].result;
-            result.val(historyResult);
+            currentValue = calculationHistory[index].result;
+            previousValue = null;
+            operator = null;
+            shouldResetDisplay = true;
+            updateDisplay();
+            updateOperationDisplay();
         });
     }
 
-    // Perform calculation
-    function calculate(operator, operatorSymbol) {
-        const inputs = validateInputs();
-        if (!inputs) return;
+    // Number buttons
+    $(".number-btn").click(function() {
+        const number = $(this).data('number').toString();
         
-        let resultValue;
-        const { num1, num2 } = inputs;
-        
-        switch(operator) {
-            case 'add':
-                resultValue = num1 + num2;
-                break;
-            case 'sub':
-                resultValue = num1 - num2;
-                break;
-            case 'mul':
-                resultValue = num1 * num2;
-                break;
-            case 'divi':
-                if (num2 === 0) {
-                    showError("Error: Cannot divide by zero");
-                    return;
-                }
-                resultValue = num1 / num2;
-                break;
-            case 'mod':
-                if (num2 === 0) {
-                    showError("Error: Cannot modulo by zero");
-                    return;
-                }
-                resultValue = num1 % num2;
-                break;
-            case 'percent':
-                // Calculate percentage: num1 percent of num2
-                resultValue = (num1 / 100) * num2;
-                break;
-            case 'power':
-                resultValue = Math.pow(num1, num2);
-                break;
+        if (shouldResetDisplay || currentValue === "0") {
+            currentValue = number;
+            shouldResetDisplay = false;
+        } else {
+            if (currentValue.length < 15) { // Limit display length
+                currentValue += number;
+            }
         }
         
-        const formattedResult = formatResult(resultValue);
-        result.val(formattedResult);
-        result.removeClass('error');
+        updateDisplay();
+    });
+
+    // Operator buttons
+    $(".operator-btn, .advanced-btn").click(function() {
+        const op = $(this).data('operator');
         
-        addToHistory(num1, operatorSymbol, num2, formattedResult);
-        lastOperation = operator;
-    }
-
-    // Button click handlers
-    $("#add").click(function(){
-        calculate('add', '+');
+        if (previousValue !== null && operator !== null && !shouldResetDisplay) {
+            calculate();
+        }
+        
+        previousValue = currentValue;
+        operator = op;
+        shouldResetDisplay = true;
+        updateOperationDisplay();
     });
 
-    $("#sub").click(function(){
-        calculate('sub', '-');
-    });
-
-    $("#divi").click(function(){
-        calculate('divi', '÷');
-    });
-
-    $("#mul").click(function(){
-        calculate('mul', '×');
-    });
-
-    $("#mod").click(function(){
-        calculate('mod', '%');
-    });
-
-    $("#percent").click(function(){
-        calculate('percent', '% of');
-    });
-
-    $("#power").click(function(){
-        calculate('power', '^');
+    // Equals button
+    $("#equals").click(function() {
+        calculate();
     });
 
     // Clear button
-    $("#clear").click(function(){
-        a.val('');
-        b.val('');
-        result.val('');
-        result.removeClass('error');
+    $("#clear").click(function() {
+        clearAll();
     });
 
-    // Toggle negative for Number 1
-    $("#toggle1").click(function(){
-        if (a.val() !== '') {
-            a.val(parseFloat(a.val()) * -1);
+    // Backspace
+    $("#backspace").click(function() {
+        if (currentValue.length > 1) {
+            currentValue = currentValue.slice(0, -1);
+        } else {
+            currentValue = "0";
+        }
+        updateDisplay();
+    });
+
+    // Decimal point
+    $("#decimal").click(function() {
+        if (shouldResetDisplay) {
+            currentValue = "0";
+            shouldResetDisplay = false;
+        }
+        
+        if (!currentValue.includes('.')) {
+            currentValue += '.';
+            updateDisplay();
         }
     });
 
-    // Toggle negative for Number 2
-    $("#toggle2").click(function(){
-        if (b.val() !== '') {
-            b.val(parseFloat(b.val()) * -1);
+    // Toggle sign
+    $("#toggleSign").click(function() {
+        if (currentValue !== "0") {
+            if (currentValue.startsWith('-')) {
+                currentValue = currentValue.substring(1);
+            } else {
+                currentValue = '-' + currentValue;
+            }
+            updateDisplay();
         }
     });
 
-    // Copy result to clipboard
-    $("#copyResult").click(function(){
-        const resultValue = result.val();
-        if (resultValue && !resultValue.startsWith("Error")) {
-            // Create temporary input to copy
-            const tempInput = $("<input>");
-            $("body").append(tempInput);
-            tempInput.val(resultValue).select();
-            document.execCommand("copy");
-            tempInput.remove();
-            
-            // Show feedback
-            const originalText = $(this).text();
-            $(this).text("✓");
-            setTimeout(() => {
-                $(this).text(originalText);
-            }, 1000);
-        }
+    // Percent button (calculates percentage of current value)
+    $("#percent").click(function() {
+        const value = parseFloat(currentValue);
+        currentValue = formatResult(value / 100);
+        shouldResetDisplay = true;
+        updateDisplay();
     });
 
-    // Use result for next calculation
-    $("#useResult").click(function(){
-        const resultValue = result.val();
-        if (resultValue && !resultValue.startsWith("Error")) {
-            a.val(resultValue);
-            b.val('');
-            result.val('');
-        }
+    // Copy result
+    $("#copyResult").click(function() {
+        const tempInput = $("<input>");
+        $("body").append(tempInput);
+        tempInput.val(currentValue).select();
+        document.execCommand("copy");
+        tempInput.remove();
+        
+        const originalText = $(this).text();
+        $(this).text("✓ Copied");
+        setTimeout(() => {
+            $(this).text(originalText);
+        }, 1000);
+    });
+
+    // Use result
+    $("#useResult").click(function() {
+        previousValue = null;
+        operator = null;
+        shouldResetDisplay = true;
+        updateOperationDisplay();
     });
 
     // Clear history
-    $("#clearHistory").click(function(){
+    $("#clearHistory").click(function() {
         if (confirm("Clear all calculation history?")) {
             calculationHistory = [];
             updateHistoryDisplay();
@@ -227,78 +273,42 @@ $(document).ready(function(){
     });
 
     // Keyboard support
-    $(document).keydown(function(e){
-        // Prevent default only for calculator shortcuts
-        if ([13, 27, 187, 189, 106, 111, 53].includes(e.keyCode) && 
-            (e.target.id === 'num1' || e.target.id === 'num2' || e.target.tagName === 'BODY')) {
-            
-            switch(e.keyCode) {
-                case 13: // Enter key
-                    e.preventDefault();
-                    if (lastOperation && lastOperation !== '') {
-                        $("#" + lastOperation).click();
-                    } else {
-                        $("#add").click(); // Default to addition
-                    }
-                    break;
-                case 27: // Escape key
-                    e.preventDefault();
-                    $("#clear").click();
-                    break;
-                case 187: // + key (with or without shift)
-                case 107: // Numpad +
-                    e.preventDefault();
-                    $("#add").click();
-                    break;
-                case 189: // - key
-                case 109: // Numpad -
-                    e.preventDefault();
-                    $("#sub").click();
-                    break;
-                case 106: // Numpad *
-                    if (e.shiftKey && e.keyCode === 56) { // Shift + 8 for *
-                        e.preventDefault();
-                        $("#mul").click();
-                    } else if (e.keyCode === 106) { // Numpad *
-                        e.preventDefault();
-                        $("#mul").click();
-                    }
-                    break;
-                case 111: // Numpad /
-                case 191: // / key
-                    e.preventDefault();
-                    $("#divi").click();
-                    break;
-                case 53: // 5 key
-                    if (e.shiftKey) { // Shift + 5 for %
-                        e.preventDefault();
-                        $("#mod").click();
-                    }
-                    break;
-            }
+    $(document).keydown(function(e) {
+        // Numbers
+        if (e.key >= '0' && e.key <= '9') {
+            $(`.number-btn[data-number="${e.key}"]`).click();
+        }
+        // Operators
+        else if (e.key === '+') {
+            $(`.operator-btn[data-operator="+"]`).click();
+        }
+        else if (e.key === '-') {
+            $(`.operator-btn[data-operator="-"]`).click();
+        }
+        else if (e.key === '*') {
+            $(`.operator-btn[data-operator="×"]`).click();
+        }
+        else if (e.key === '/') {
+            e.preventDefault();
+            $(`.operator-btn[data-operator="÷"]`).click();
+        }
+        else if (e.key === '%') {
+            $("#percent").click();
+        }
+        // Special keys
+        else if (e.key === 'Enter' || e.key === '=') {
+            e.preventDefault();
+            $("#equals").click();
+        }
+        else if (e.key === 'Escape') {
+            $("#clear").click();
+        }
+        else if (e.key === 'Backspace') {
+            e.preventDefault();
+            $("#backspace").click();
+        }
+        else if (e.key === '.') {
+            $("#decimal").click();
         }
     });
-
-    // Also handle keypress for * key
-    $(document).keypress(function(e){
-        if (e.key === '*') {
-            e.preventDefault();
-            $("#mul").click();
-        } else if (e.key === '/') {
-            e.preventDefault();
-            $("#divi").click();
-        } else if (e.key === '+') {
-            e.preventDefault();
-            $("#add").click();
-        } else if (e.key === '-') {
-            e.preventDefault();
-            $("#sub").click();
-        } else if (e.key === '%') {
-            e.preventDefault();
-            $("#mod").click();
-        }
-    });
-
-    // Focus on first input on load
-    a.focus();
 });
