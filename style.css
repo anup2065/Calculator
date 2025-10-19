@@ -13,6 +13,17 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1200px;
+    width: 100%;
 }
 
 .whole {
@@ -27,11 +38,26 @@ body {
 
 .main {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .number {
     margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 #top {
@@ -40,22 +66,23 @@ body {
     text-decoration: underline;
     color: brown;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 label {
     font-weight: bold;
-    font-size: clamp(18px, 4vw, 30px);
+    font-size: clamp(18px, 4vw, 24px);
     display: block;
     margin-bottom: 10px;
+    color: #333;
 }
 
 #num1,
 #num2 {
     font-weight: bold;
-    font-size: clamp(18px, 3vw, 24px);
+    font-size: clamp(16px, 3vw, 20px);
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     height: 40px;
     padding: 5px 10px;
     border: 2px solid #333;
@@ -67,13 +94,63 @@ label {
     font-weight: bold;
     background-color: lightblue;
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     height: 45px;   
-    font-size: clamp(18px, 3vw, 20px);
+    font-size: clamp(16px, 3vw, 20px);
     border-radius: 10px;
     padding: 5px 10px;
     border: 2px solid #333;
-    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+#result.error {
+    background-color: #ffcccc;
+    color: #cc0000;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.result-section {
+    margin-top: 30px;
+}
+
+.toggle-btn {
+    background-color: #666;
+    color: white;
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: clamp(14px, 2.5vw, 16px);
+}
+
+.toggle-btn:hover {
+    background-color: #888;
+    transform: scale(1.05);
+}
+
+.action-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #2e7d32;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: clamp(16px, 3vw, 20px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 45px;
+}
+
+.action-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
 }
 
 .buttons {
@@ -84,22 +161,23 @@ label {
     justify-content: center;
 }
 
-button {
+button.calc-btn {
     text-align: center;
     width: calc(50% - 5px);
-    min-width: 120px;
+    min-width: 110px;
     max-width: 150px;
     height: 50px;
-    font-size: clamp(14px, 2.5vw, 17px);
+    font-size: clamp(13px, 2.5vw, 16px);
     font-weight: bold;
     border: 2px solid #333;
     cursor: pointer;
     transition: all 0.3s ease;
+    border-radius: 6px;
 }
 
 #add {
     color: green;
-    border-radius: 6px;
+    background-color: #f0fff0;
 }
 
 #add:hover {
@@ -109,7 +187,7 @@ button {
 
 #sub {
     color: red;
-    border-radius: 6px;
+    background-color: #fff5f5;
 }
 
 #sub:hover {
@@ -119,7 +197,7 @@ button {
 
 #mul {
     color: orange;
-    border-radius: 6px;
+    background-color: #fffaf0;
 }
 
 #mul:hover {
@@ -127,21 +205,9 @@ button {
     transform: scale(1.05);
 }
 
-#mod {
-    color: blue;
-    border-radius: 6px;
-    width: 100%;
-    max-width: 310px;
-}
-
-#mod:hover {
-    background-color: cyan;
-    transform: scale(1.05);
-}
-
 #divi {
     color: purple;
-    border-radius: 6px;
+    background-color: #faf0ff;
 }
 
 #divi:hover {
@@ -149,15 +215,158 @@ button {
     transform: scale(1.05);
 }
 
+#mod {
+    color: blue;
+    background-color: #f0f8ff;
+}
+
+#mod:hover {
+    background-color: cyan;
+    transform: scale(1.05);
+}
+
+#percent {
+    color: #d35400;
+    background-color: #fff5e6;
+}
+
+#percent:hover {
+    background-color: #ffd9a3;
+    transform: scale(1.05);
+}
+
+#power {
+    color: #16a085;
+    background-color: #e8f8f5;
+}
+
+#power:hover {
+    background-color: #a3e4d7;
+    transform: scale(1.05);
+}
+
+.clear-btn {
+    color: white;
+    background-color: #e74c3c;
+    width: 100%;
+    max-width: 310px;
+}
+
+.clear-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.keyboard-hint {
+    text-align: center;
+    font-size: clamp(11px, 2vw, 13px);
+    color: #555;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+/* History Panel */
+.history-panel {
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 5px solid rgb(75, 25, 4);
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 350px;
+    width: 100%;
+    max-height: 600px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid rgb(75, 25, 4);
+}
+
+.history-header h2 {
+    font-family: "Lobster Two", cursive;
+    color: brown;
+    font-size: clamp(20px, 4vw, 28px);
+    margin: 0;
+}
+
+.history-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.history-item {
+    background-color: #f9f9f9;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.history-item:hover {
+    background-color: #e3f2fd;
+    border-color: #2196F3;
+    transform: translateX(5px);
+}
+
+.history-calc {
+    font-weight: bold;
+    font-size: clamp(14px, 2.5vw, 16px);
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.history-time {
+    font-size: clamp(11px, 2vw, 13px);
+    color: #777;
+}
+
+.no-history {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Scrollbar styling */
+.history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 /* Mobile devices (portrait phones) */
 @media (max-width: 480px) {
+    .container {
+        flex-direction: column;
+    }
+    
     .whole {
         padding: 20px 15px;
         border-radius: 30px;
         border-width: 3px;
     }
     
-    button {
+    button.calc-btn {
         width: 100%;
         max-width: 100%;
         margin: 5px 0;
@@ -168,6 +377,34 @@ button {
     #result {
         max-width: 100%;
     }
+    
+    .input-group,
+    .result-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .input-group input {
+        max-width: 100%;
+    }
+    
+    .toggle-btn {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .action-btn {
+        width: 48%;
+    }
+    
+    .history-panel {
+        max-width: 100%;
+        max-height: 400px;
+    }
+    
+    .keyboard-hint {
+        font-size: 10px;
+    }
 }
 
 /* Tablets (portrait) */
@@ -177,8 +414,16 @@ button {
         padding: 25px;
     }
     
-    button {
+    button.calc-btn {
         min-width: 140px;
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+    
+    .history-panel {
+        max-width: 500px;
     }
 }
 
@@ -193,5 +438,10 @@ button {
 @media (min-width: 1025px) {
     .whole {
         border-radius: 190px;
+    }
+    
+    .container {
+        flex-direction: row;
+        align-items: flex-start;
     }
 }
