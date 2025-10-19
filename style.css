@@ -21,9 +21,10 @@ body {
     gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     max-width: 1200px;
     width: 100%;
+    margin: 0 auto;
 }
 
 .whole {
@@ -222,6 +223,17 @@ body {
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
+}
+
+.signature {
+    text-align: center;
+    font-family: "Lobster Two", cursive;
+    font-size: clamp(16px, 3vw, 20px);
+    color: #ffaa33;
+    margin-top: 15px;
+    padding: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 2px;
 }
 
 /* History Panel */
